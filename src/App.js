@@ -197,16 +197,38 @@ function Projects() {
   return (
     <section id="projects">
       <center><h2>Projects</h2></center>
+
       <div class="project-container">
-        <h4>Store API</h4>
-        <p>Built a secure API using FastAPI and MariaDB that allows users to purchase items displayed.</p>
-        <img src="../images/dbSite.png" alt="Store Api Site" style={{ width: '473.25px', height: '243.5px', borderRadius: '8px' }}></img>
-        <h4>Non-profit organization website</h4>
-        <p>Created a website for a mother and daughter to inform people about strokes and advertise their
-          book about the daughters stroke experience and recovery from the mothers eyes.</p>
-        <h4>Personal Portfolio</h4>
-        <p>Designed and built this portfolio for anyone to be able to view my experience, visit, and get in contact with me.</p>
+        <div class="project">
+          <h4>Store API</h4>
+          <p>Built a secure API using FastAPI and MariaDB that allows users to purchase items displayed.</p>
+        </div>
+        <div class="project-img">
+          <img src="../images/dbSite.png" alt="Store Api Site" style={{ width: '473.25px', height: '243.5px', borderRadius: '8px' }}></img>
+        </div>
       </div>
+
+      <div class="project-container">
+        <div class="project">
+          <h4>Non-profit organization website</h4>
+          <p>Created a website for a mother and daughter to inform people about strokes and advertise their
+            book about the daughters stroke experience and recovery from the mothers eyes.</p>
+        </div>
+        <div class="project-img">
+          <img src="../images/nonproforg.png" alt="Non-profit organization website" style={{ width: '473.25px', height: '243.5px', borderRadius: '8px' }}></img>
+        </div>
+      </div>
+
+      <div class="project-container">
+        <div class="project">
+          <h4>Personal Portfolio</h4>
+          <p>Designed and built this portfolio for anyone to be able to view my experience, visit, and get in contact with me.</p>
+        </div>
+        <div class="project-img">
+          <img src="../images/portfolio.png" alt="Personal Portfolio" style={{ width: '473.25px', height: '243.5px', borderRadius: '8px' }}></img>
+        </div>
+      </div>
+
     </section>
   );
 }
@@ -276,7 +298,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <Title />
+      <Link to="/"><Title /></Link>
        <nav style={{ padding: '10px 20px', borderBottom: '1px solid #f4f4f4', position: 'relative' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
@@ -302,7 +324,7 @@ export default function App() {
               <img src="../images/Gmail-Logo.png" alt="Gmail" width="40" height="32" />
             </a>
             <a href="https://www.linkedin.com/in/alex-sullivan-4046bb249/" target="_blank" rel="noopener noreferrer">
-              <img src="../images/linkedin_logo.jpg" alt="LinkedIn" width="32" height="32" />
+              <img src="../images/linkedin_logo.png" alt="LinkedIn" width="32" height="32" />
             </a>
             <a href="https://github.com/hyperbole22" target="_blank" rel="noopener noreferrer">
               <img src="../images/github_logo.png" alt="GitHub" width="32" height="32" />
