@@ -481,32 +481,80 @@ function Projects() {
 function Contact() {
   const { theme } = useTheme();
   const dark = theme === 'dark';
+  const [status, setStatus] = React.useState('idle');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('sending');
+
+    const formData = new FormData(e.target);
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const message = formData.get('message');
+
+    try {
+      const res = await fetch('http://localhost:3001/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (res.ok) {
+        setStatus('success');
+        e.target.reset();
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+  };
+
   return (
     <section id="contact">
       <h1 style={{ color: dark ? '#f0d6ff' : undefined }}>Contact Me!</h1>
-      <form className="contact-form" style={{
-        background: dark ? '#2d1f3d' : undefined,
-        color: dark ? '#e0c8f5' : undefined,
-      }}>
+      <form
+        className="contact-form"
+        onSubmit={handleSubmit}
+        style={{
+          background: dark ? '#2d1f3d' : undefined,
+          color: dark ? '#e0c8f5' : undefined,
+        }}
+      >
         <label htmlFor="name" style={{ color: dark ? '#e0c8f5' : undefined }}>Name</label>
         <input type="text" id="name" name="name" required style={{
           background: dark ? '#1a1a2e' : undefined,
           color: dark ? '#f0d6ff' : undefined,
           border: dark ? '1px solid #6b3fa0' : undefined,
         }} />
+
         <label htmlFor="email" style={{ color: dark ? '#e0c8f5' : undefined }}>Email</label>
         <input type="email" id="email" name="email" required style={{
           background: dark ? '#1a1a2e' : undefined,
           color: dark ? '#f0d6ff' : undefined,
           border: dark ? '1px solid #6b3fa0' : undefined,
         }} />
+
         <label htmlFor="message" style={{ color: dark ? '#e0c8f5' : undefined }}>Message</label>
         <textarea id="message" name="message" required style={{
           background: dark ? '#1a1a2e' : undefined,
           color: dark ? '#f0d6ff' : undefined,
           border: dark ? '1px solid #6b3fa0' : undefined,
         }} />
-        <button type="submit" className="cta-button">Send Message</button>
+
+        <button type="submit" className="cta-button" disabled={status === 'sending'}>
+          {status === 'sending' ? 'Sending…' : 'Send Message'}
+        </button>
+
+        {status === 'success' && (
+          <p style={{ color: '#7c3aed', textAlign: 'center', marginTop: '10px' }}>
+            Message sent! I'll get back to you soon.
+          </p>
+        )}
+        {status === 'error' && (
+          <p style={{ color: '#e53e3e', textAlign: 'center', marginTop: '10px' }}>
+            Something went wrong. Please try again.
+          </p>
+        )}
       </form>
     </section>
   );
