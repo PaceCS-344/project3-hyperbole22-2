@@ -404,64 +404,43 @@ function Projects() {
   const dark = theme === 'dark';
   const [hovered, setHovered] = React.useState(null);
 
+  const [repos, setRepos] = React.useState([]);
+  const [loadingRepos, setLoadingRepos] = React.useState(true);
+
+  React.useEffect(() => {
+    fetch('https://api.github.com/users/hyperbole22/repos?sort=updated&per_page=10')
+      .then(res => res.json())
+      .then(data => {
+        setRepos(data);
+        setLoadingRepos(false);
+      })
+      .catch(() => setLoadingRepos(false));
+  }, []);
+
   return (
-    <section id="projects" style={{ padding: '20px 0' }}>
-      <h2 style={{ textAlign: 'center', fontSize: '2rem', marginBottom: '8px', color: dark ? '#f0d6ff' : '#222' }}>
-        Projects
-      </h2>
-      <br /><br />
-      <div className="projects-grid">
-        {projectsData.map((project) => {
-          const isHovered = hovered === project.title;
-          return (
-            <div
-              key={project.title}
-              onMouseEnter={() => setHovered(project.title)}
-              onMouseLeave={() => setHovered(null)}
-              className="project-card"
-              style={{
-                background: dark
-                  ? isHovered ? '#3d1f5e' : '#2d1f3d'
-                  : isHovered ? '#faf5ff' : undefined,
-                borderColor: isHovered ? '#a855f7' : dark ? '#4a2d6e' : undefined,
-                boxShadow: isHovered
-                  ? '0 16px 40px rgba(168,85,247,0.2)'
-                  : dark ? '0 2px 8px rgba(0,0,0,0.4)' : undefined,
-                transform: isHovered ? 'translateY(-6px)' : undefined,
-              }}
-            >
-              <div className="project-card-img-wrapper">
-                <img src={project.img} alt={project.imgAlt} />
-              </div>
+    <>
+      <h2>Recent GitHub Activity</h2>
+      {loadingRepos ? (
+        <p>Loading repos...</p>
+      ) : (
+        <div className="projects-grid">
+          {repos.map(repo => (
+            <div key={repo.id} className="project-card">
               <div className="project-card-body">
                 <div className="project-card-title-row">
-                  <span style={{ fontSize: '1.4rem' }}>{project.emoji}</span>
-                  <h3 style={{ color: dark ? '#e0c8f5' : undefined }}>
-                    {project.title}
-                  </h3>
+                  <h3>{repo.name}</h3>
                 </div>
-                <p
-                  className="project-card-desc"
-                  style={{ color: dark ? '#c4a8d8' : undefined }}
-                >
-                  {project.desc}
+                <p className="project-card-desc">
+                  {repo.description || 'No description provided.'}
                 </p>
                 <div className="project-tags">
-                  {project.tags.map(tag => (
-                    <span
-                      key={tag}
-                      className="project-tag"
-                      style={{
-                        background: dark ? '#1a1a2e' : undefined,
-                        color: dark ? '#c084fc' : undefined,
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {repo.language && (
+                    <span className="project-tag">{repo.language}</span>
+                  )}
+                  <span className="project-tag">⭐ {repo.stargazers_count}</span>
                 </div>
                 <a
-                  href={project.github}
+                  href={repo.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="project-github-link"
@@ -470,10 +449,10 @@ function Projects() {
                 </a>
               </div>
             </div>
-          );
-        })}
-      </div>
-    </section>
+          ))}
+        </div>
+      )}
+    </>
   );
 }
 
