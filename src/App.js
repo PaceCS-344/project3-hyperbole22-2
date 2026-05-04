@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation, useParams } from 'react-router-dom';
 
 {/* Theme context */}
 const ThemeContext = React.createContext();
@@ -75,14 +75,14 @@ function Home() {
     '../images/mecat.png',
   ];
 
-  const goToSlide = (index) => {
+  const goToSlide = React.useCallback((index) => {
     if (index === currentSlide) return;
     setFade(false);
     setTimeout(() => {
       setCurrentSlide(index);
       setFade(true);
     }, 400);
-  };
+  }, [currentSlide]);
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -483,7 +483,7 @@ function Contact() {
   const dark = theme === 'dark';
   const [status, setStatus] = React.useState('idle');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = React.useCallback(async (e) => {
     e.preventDefault();
     setStatus('sending');
 
@@ -507,7 +507,7 @@ function Contact() {
     } catch {
       setStatus('error');
     }
-  };
+  }, []);
 
   return (
     <section id="contact">
